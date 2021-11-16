@@ -38,6 +38,6 @@ Each file should then be avalible at a URL like this:
 
 https://cdn.mingodesk.com/file/1c52461b-db8b-4a1f-8475-201821d26e1c_2
 
-However, the FE will apend a JWT like this: https://cdn.mingodesk.com/file/1c52461b-db8b-4a1f-8475-201821d26e1c_2?JWT the CDN will then
+However, the FE will apend a JWT like this: https://cdn.mingodesk.com/file/1c52461b-db8b-4a1f-8475-201821d26e1c_2?token=JWTHERE the CDN will then
 check if the JWT is valid and if it isn't (it'll be relatively short-lived) then return a 403 otherwise respond
 with the file
