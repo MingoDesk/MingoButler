@@ -3,8 +3,7 @@
 The CDN will store all sorts of files but for some files we will check for some specific parameters
 
 For the image type of file (see list below) we'll allow relativeyly large images and video files (50 mb max).
-If the image is above a max width or height of 1920x1080 then the CDN will automatically downscale it to that max size
-Videos however will be blocked if above the maximum file size.
+For all images that are 720p and above a thumbnail image is also to be created in the 360p.
 
 - jpeg
 - jpg
@@ -17,18 +16,22 @@ Client makes an POST request to a MingoChan endpoint to get a JWT
 that includes information such as ticketId, authorId, and messageId
 
 Client makes a request towards the CDN that includes the file and the JWT as query parameter in a PUT request
-CDN decodes the JWT if it isn't valid, has expired, or the user doesn't have the nececary permissions or is not the author of the ticket CDN returns 403.
+CDN decodes the JWT if it isn't valid, has expired, or the user doesn't have the necessary permissions or is not
+the author of the ticket CDN returns 403.
 
 CDN stores the folder named with the ticketId and the file is renamed to the messageId after processing (if needed).
 
-In case that there are several files with the same message store it with a \_ with an appended integer. Then once the
-CDN is done storing the files it responds with the ID of each file
+Each file must have an _+int so first file would be filename_0 then file two would be filename_2, etc.
+
+Each file must be encrypted.
 
 Example folder
 
 9df29b98-4a6a-4f45-8060-251c1163d81d:
 
---> 1c52461b-db8b-4a1f-8475-201821d26e1c
+--> 1c52461b-db8b-4a1f-8475-201821d26e1c_0_original.jpg
+
+--> 1c52461b-db8b-4a1f-8475-201821d26e1c_0_small.jpg
 
 --> 1c52461b-db8b-4a1f-8475-201821d26e1c_1
 
