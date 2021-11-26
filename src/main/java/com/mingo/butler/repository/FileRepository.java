@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -21,8 +22,28 @@ public class FileRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
+    private static final String INSERT = "INSERT INTO file_data " +
+            "(ticket_id, message_id, url, created_date) " +
+            "VALUES (:ticketId, :messageId, :url, :createdDate)";
+
+    private static final String FIND_BY_TICKET_ID_AND_MESSAGE_ID = "SELECT * FROM file_data " +
+            "WHERE ticket_id = :ticketId " +
+            "AND message_id = :messageId";
+
     public FileRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public void insert(FileDetails fileDetails) {
+        jdbcTemplate.update(INSERT, getFileDetailsParams(fileDetails));
+    }
+
+    public List<FileDetails> findByTicketIdAndMessageId(String ticketId, String messageId) {
+        Map<String, Object> queryParams = new HashMap<>();
+        queryParams.put("ticketId", ticketId);
+        queryParams.put("messageId", messageId);
+
+        return jdbcTemplate.query(FIND_BY_TICKET_ID_AND_MESSAGE_ID, queryParams, getRowMapper());
     }
 
     private RowMapper<FileDetails> getRowMapper() {
