@@ -23,8 +23,8 @@ public class FileRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     private static final String INSERT = "INSERT INTO file_data " +
-            "(ticket_id, message_id, url, created_date) " +
-            "VALUES (:ticketId, :messageId, :url, :createdDate)";
+            "(ticket_id, message_id, file_name, url, created_date) " +
+            "VALUES (:ticketId, :messageId, :fileName, :url, :createdDate)";
 
     private static final String FIND_BY_TICKET_ID_AND_MESSAGE_ID = "SELECT * FROM file_data " +
             "WHERE ticket_id = :ticketId " +
@@ -50,6 +50,7 @@ public class FileRepository {
         return (resultSet, rowNum) -> new FileDetailsBuilder()
                 .messageId(resultSet.getString("message_id"))
                 .ticketId(resultSet.getString("ticket_id"))
+                .ticketId(resultSet.getString("file_name"))
                 .createdDate(resultSet.getDate("created_date").toLocalDate())
                 .url(resultSet.getString("url"))
                 .build();
@@ -63,6 +64,7 @@ public class FileRepository {
         Map<String, Object> params = new HashMap<>();
         params.put("messageId", fileDetails.messageId());
         params.put("ticketId", fileDetails.ticketId());
+        params.put("fileName", fileDetails.fileName());
         params.put("createdDate", fileDetails.createdDate());
         params.put("url", fileDetails.url());
 

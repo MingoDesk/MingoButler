@@ -11,6 +11,8 @@ public interface FileDetails {
 
     String messageId();
 
+    String fileName();
+
     String url();
 
     LocalDate createdDate();
